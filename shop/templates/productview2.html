@@ -1,0 +1,39 @@
+{% extends 'basic.html' %}
+
+{% block title %} {{ product.product_name }} {% endblock %}
+{% block body %}
+
+
+<!-- {{ product.product_name }} -->
+
+
+
+
+
+<div class="containe mt-5">
+    <div class="row">
+        <div class="col-md-5 col-11 mx-auto" >
+            <!-- product_img -->
+            <div class="col-md-5 col-11 mx-auto bg-light d-flex justify-content-center align-item-center shadow ">
+                <img src="/{{ product.image }}" alt="cart image" class="img-fluid">
+            </div>
+
+        </div>
+
+        <div class="col-md-7 col-11 mx-auto" >
+            <div class="col-6 card-title ">
+                <br>
+                <h1 class="mb-4 product_name"><b>{{ product.product_name }}</b></h1>
+                <p>{{ product.des }}</p>
+                <p><b>₹ {{ product.price}}</b></p>
+                <p><b>Availibility </b>In Stock</p>
+                <p><b> Condition</b>New</p>
+                <!-- <p><b> Brand: </b>Apple</p> -->
+                <button class="btn bg-primary">Add to cart</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

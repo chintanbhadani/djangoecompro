@@ -1,0 +1,239 @@
+{% extends 'basic.html' %}
+
+{% block title %} Title of about {% endblock %}
+{% block body %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-12"></div>
+
+        <!-- form -->
+        <div class="col-md-8 col-sm-8 col-xs-12" id="form">
+
+            <h2>Enter Address & Other Details:</h2>
+            <form method="post" id="formsubmit" action="/checkout/">{% csrf_token %}
+                <input type="" name="itemsJson" id="itemsJson" hidden>
+                <input type="number" name="amount" id="amount" hidden>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputname">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress">Address</label>
+                    <input type="text" class="form-control" id="address1" name="address1" placeholder="1234 Main St">
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress2">Address line 2</label>
+                    <input type="text" class="form-control" id="address2" name="address2"
+                        placeholder="Apartment, studio, or floor">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputCity">City</label>
+                        <input type="text" class="form-control" id="city" name="city">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputState">State</label>
+                        <input type="text" class="form-control" id="state" name="state" placeholder="Enter State">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputZip">Zip</label>
+                        <input type="text" class="form-control" id="zip_code" name="zip_code">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputZip">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone">
+                </div>
+                <!-- <div id="paypal-button-container"></div> -->
+                <button type="submit" id="placeorderbtn" class="btn btn-primary">Place Order</button>
+            </form>
+            <br>
+            <button class="btn btn-primary invisible" id="rzp-button1">Pay</button>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-12"></div>
+
+    </div>
+    {% endblock %}
+    {% block js %}
+    <!-- <script
+        src="https://www.paypal.com/sdk/js?client-id=AZjq41w5s0fPQ87SaPyakXRQfWDmfdUOOx90MCllXmih-HNNn96NvvVVVl37UgYkvhOZQgTfGnWLK667&currency=USD"></script> -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+
+
+        var tolal = 0;
+        document.addEventListener('DOMContentLoaded', function () {
+            var cart = JSON.parse(localStorage.getItem('cart'));
+            console.log(cart);
+
+
+            var allkeys = Object.keys(cart);
+            console.log(allkeys);
+
+            for (var i = 0; i < allkeys.length; i++) {
+                var idstr = allkeys[i];
+                console.log(idstr)
+                tolal = tolal + parseFloat(cart[idstr][0]) * parseFloat(cart[idstr][1])
+                // console.log(cart[idstr][0]); 
+            }
+
+            console.log(tolal)
+            console.log(allkeys.length)
+
+            document.getElementById("amount").value = tolal;
+            document.getElementById("itemsJson").value = allkeys.length;
+
+        });
+
+        var payment = JSON.parse("{{payment|escapejs}}");
+
+
+
+        document.getElementById("placeorderbtn").addEventListener('click', showpaybtn);
+
+        function showpaybtn() {
+            console.log("showpaybtn ");
+            document.getElementById("rzp-button1").classList.remove('invisible');
+            console.log(payment);
+        }
+
+        // if(payment != ""){
+        //     // rzp-button1
+        //     document.getElementById("rzp-button1").addClass('invisible');
+        // }
+
+        var options = {
+            "key": "rzp_test_nL2qSed9iwqMSv", // Enter the Key ID generated from the Dashboard
+            "amount": payment.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "CHINTAN ",
+            "description": "Test Transaction",
+            // "image": "https://example.com/your_logo",
+            "order_id": payment.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                location.href = "/sucess/"
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            },
+            // callback_url: '/sucess/',
+            // redirect: true
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            alert(response.error.code);
+            // alert(response.error.description);
+            // alert(response.error.source);
+            // alert(response.error.step);
+            // alert(response.error.reason);
+            // alert(response.error.metadata.order_id);
+            // alert(response.error.metadata.payment_id);
+        });
+        document.getElementById('rzp-button1').onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        }
+
+
+        $(document).ready(function () {
+            $(document).on('submit', '#formsubmit', function (event) {
+                alert('dude you totally clicked'); event.preventDefault(); return false;
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Render the PayPal button into #paypal-button-container
+        // paypal.Buttons({
+
+        //     // Set up the transaction
+        //     createOrder: function (data, actions) {
+        //         return actions.order.create({
+        //             purchase_units: [{
+        //                 amount: {
+        //                     value: tolal
+        //                 }
+        //             }]
+        //         });
+        //     },
+
+        //     // Finalize the transaction
+        //     onApprove: function (data, actions) {
+        //         return actions.order.capture().then(function (details) {
+        //             // Show a success message to the buyer
+        //             alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        //         });
+        //     }
+
+
+        // }).render('#paypal-button-container');
+    </script>
+
+    <script>
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+    {% endblock %}

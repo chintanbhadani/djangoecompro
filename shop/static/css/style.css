@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Mulish', sans-serif;
+    /* background-color: bisque; */
+}
+
+.card{
+    border: none;
+}
+
+.main_cart{
+    background-color: #fff;
+}
+
+.product_img img{
+    min-width: 200px;
+    max-height: 200px;
+
+}
+
+.product_name{
+    color: black;
+    font-size: 1.4rem;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.set_Quntity{
+    position: relative;
+
+}
+
+/* .set_Quntity ::after{
+    position: relative;
+} */
+
+.page-link {
+    line-height: 16px;
+    width: 45px;
+    padding: 3px;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+}
+
+.fa-heart:hover{
+    color: red;
+}

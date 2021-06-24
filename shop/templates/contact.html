@@ -1,0 +1,44 @@
+{% extends 'basic.html' %}
+
+{% block title %} Title of contact {% endblock %} 
+{% block body %} 
+
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-md-3 col-sm-3 col-xs-12"></div>
+
+        <div class="col-md-6 col-sm-6 col-xs-12" id="form">
+
+            <h3 style="text-align: center;" >contact Us</h3>
+
+    <form action="/contact/" method="POST" >
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Name</label>
+            <input type="text" class="form-control" name="name1" id="exampleInputPassword1">
+          </div>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+            <textarea class="form-control" name="desc" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+
+
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+    </div>
+
+</div>
+
+
+{% endblock %} 

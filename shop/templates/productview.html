@@ -1,0 +1,385 @@
+{% extends 'basic.html' %}
+
+{% block title %} {{ product.product_name }} {% endblock %}
+{% block body %}
+<!-- <div class="Container">
+    <div class="row">
+        <div class="col-md-4">
+            <img src='/{{ product.image }}' class="card-img-top" alt="...">
+        </div>
+        <div class="col-md-8">
+            <h5>{{ product.product_name }}</h5>
+            <p>{{ product.des }}</p>
+        </div>
+    </div>
+</div> -->
+<!-- {{ product.product_name }} {{ product.image }}  -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-11 mx-auto">
+            <div class="row mt-5 gx-3">
+
+                <!-- left side div  -->
+                <div class="col-md-12 col-lg-8 col-11 mx-auto main_cart mb-lg-0 mb-5">
+                    <div class="card p-4">
+                        <h2 class="py-4 font-weight-bold"> Cart (<span id="total_item">5</span> item)</h2>
+                        <!-- {{product.1.product_name}}
+                        {{product.1.image}} -->
+
+                        <div id="template">
+
+
+
+                        </div>
+
+                        <!-- ##########################        2ND PRODUCT           ########################### -->
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+
+                <!-- right side div  -->
+                <div class="col-md-12 col-lg-4 col-11 mx-auto main_cart mb-lg-0 mt-mb-5">
+                    <div class="right_side p-2 shadow bg-white">
+                        <h2 class="product_name mb-5"> The Total Amount Of</h2>
+                        <div class="price_indiv d-flex justify-content-between">
+                            <p>Product Amount</p>
+                            <p>₹ <span id="prod_total_amt">00.0</span></p>
+                        </div>
+                        <div class="price_indiv d-flex justify-content-between">
+                            <p>Shipping Charge</p>
+                            <p>₹ <span id="shopping_charge">00.0</span></p>
+                        </div>
+                        <hr />
+                        <div class="total-amt price_indiv d-flex justify-content-between font-weight-bold">
+                            <p>Total amount of (including VAT)</p>
+                            <p>₹ <span id="total_cart_amt"></span></p>
+                        </div>
+                        <a href="/checkout/"><button id="checkout"
+                                class="btn btn-primary text-uppercase">checkout</button></a>
+                    </div>
+
+                    <!-- discount_code -->
+                    <div class="discount_code mt-3 shadow">
+                        <div class="card">
+                            <div class="card-body">
+                                <a class="d-flex justify-content-between" data-toggle="collapse" href="#collapseExample"
+                                    aria-expanded="false" aria-current="collapseExample">Add a discount code (optional)
+                                    <span><i class="fas fa-chevron-down pt-1"></i></span>
+
+                                </a>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="mt-3">
+                                        <input type="text" id="discountcode1" class="form-control font-weight-bold "
+                                            placeholder="Enter the discount code">
+                                        <small id="error_trw" class="text-dark mt-3"> code is king</small>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm mt-3" onclick="discount_code()">Apply</button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <!-- End of cart  -->
+                    <!-- Expected delivery -->
+                    <div class="mt-3 shadow p-3 bg-white">
+                        <div class="pt-4">
+                            <h5 class="mb-4">Expected Delivery Date</h5>
+                            <p> 12 june 2021 - 15 june 2021</p>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // from django.core import serializers
+    // companies_json = serializers.serialize("json", Company.objects.all())
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadCartItem();
+        document.getElementById("checkout").addEventListener("click", checkout);
+
+    });   // END
+
+
+    function loadCartItem() {
+
+        var product = JSON.parse("{{product|escapejs}}");
+
+        // console.log(typeof (product))
+        // console.log(product.length);
+        // console.log(product);
+
+        // console.log(product[0].fields)
+
+        cart = JSON.parse(localStorage.getItem('cart'));
+        // var l = Object.keys(cart).length;
+        // console.log(l)
+        var cartv = localStorage.getItem('cart')
+        console.log(cartv)
+        var allkeys = Object.keys(cart);
+        console.log(allkeys);
+
+        console.log(localStorage.getItem('cart[pr6]'))
+
+        document.getElementById("total_item").innerHTML = allkeys.length;
+
+
+        // template
+        var htmlstr = "";
+        var template = document.getElementById('template');
+
+        for (var i = 0; i < allkeys.length; i++) {
+            console.log(allkeys[i].slice(2,));
+            var id = allkeys[i].slice(2,)
+
+
+            for (var j = 0; j < product.length; j++) {
+                if (product[j].pk == id) {
+                    console.log("id   " + id)
+                    // console.log(product[j].fields.image)
+
+                    var str = `<div class="row">
+                                    <!-- cart image div -->
+                                    <div
+                                        class="col-md-5 col-11 mx-auto bg-light d-flex justify-content-center align-item-center shadow product_img">
+                                        <img src="IMAGE" alt="cart image" class="img-fluid">
+
+
+                                    </div>
+
+                                    <!-- cart product detail -->
+                                    <div class="col-md-7 col-11 mx-auto px-4 mt-2">
+                                        <!-- product name  -->
+                                        <div class="row">
+                                            <div class="col-6 card-title">
+                                                <h1 class="mb-4 product_name">NAME</h1>
+                                                <p>DES</p>
+                                                <p>  </p>
+                                            </div>
+
+                                            <!-- set_Quntity increment -->
+                                            <div class="col-6">
+                                                <nav aria-label="Page navigation example">
+                                                    <ul class="pagination justify-content-end set_Quntity">
+                                                        <li class="page-item"><button onclick="decreaseNumber('TEXTBOX','ITEMVAL',PRICE)" class="page-link" id="decrease"><i
+                                                                    class="fas fa-minus"></i></button></li>
+                                                        <li class="page-item"><input id="TEXTBOX"  type="text" class="page-link" href="#"
+                                                                value="QTY" disabled></li>
+                                                        <li class="page-item"><button onclick="increaseNumber('TEXTBOX','ITEMVAL',PRICE)" class="page-link" id="increase"><i
+                                                                    class="fas fa-plus-square"></i></button></li>
+
+                                                    </ul>
+                                                </nav>
+                                            </div>
+
+
+                                        </div>
+
+                                        <!-- remove item  -->
+                                        <div class="row">
+                                            <div class="col-8 d-flex justify-content-between remove_wish">
+                                                <p onclick="removeItem(PRODUCTID)" ><i class="fas fa-trash-alt"></i> REMOVE ITEM</p>
+                                                <p onclick="addToWishList(PRODUCTID)" ><i class="fas fa-heart"></i> MOVE TO WISH LIST</p>
+                                                <!-- <p><i class="fas fa-trash-alt"></i>REMOVE ITEM</p> -->
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-end price_money">
+                                                <h3>₹<span class="itemprice" id="ITEMVAL">PRICE</span></h3>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+
+                                <br>`
+
+                    var idstr = "pr" + id;
+                    str = str.replaceAll('IMAGE', "/" + product[j].fields.image)
+                    str = str.replaceAll('DES', product[j].fields.des)
+                    str = str.replaceAll('NAME', product[j].fields.product_name)
+                    // str = str.replaceAll('PRICE', product[j].fields.price)
+                    str = str.replaceAll('PRICE', parseFloat(cart[idstr][0])*parseFloat(cart[idstr][1]) )
+                    str = str.replaceAll('TEXTBOX', "textbox" + id)
+                    str = str.replaceAll('ITEMVAL', "itemval" + id)
+                    str = str.replaceAll('PRODUCTID', id)
+                    str = str.replaceAll('QTY', cart[idstr][0])
+                    //   console.log(y)
+                    //   console.log(str)
+                    htmlstr = htmlstr + str;
+
+
+                }
+            }
+
+
+        }  // first for loop
+
+
+        template.innerHTML = htmlstr;
+
+
+        var prod_total_amt = document.getElementById('prod_total_amt');
+        var shopping_charge = document.getElementById('shopping_charge');
+        shopping_charge.innerHTML = 50;
+        var total_cart_amt = document.getElementById('total_cart_amt');
+
+        var itemprice = document.getElementsByClassName("itemprice");
+        console.log("itemprice   " + itemprice[0].innerHTML);
+
+        var allProdTotal = 0;
+
+        for (var k = 0; k < itemprice.length; k++) {
+            console.log(itemprice[k].innerHTML)
+            allProdTotal = allProdTotal + parseInt(itemprice[k].innerHTML)
+        }
+
+        console.log(" allProdTotal   " + allProdTotal)
+
+        prod_total_amt.innerHTML = allProdTotal;
+        total_cart_amt.innerHTML = parseInt(prod_total_amt.innerHTML) + parseInt(shopping_charge.innerHTML);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // var prod_total_amt = document.getElementById('prod_total_amt');
+    // var shopping_charge = document.getElementById('shopping_charge');
+    // shopping_charge.innerHTML = 50;
+    // var total_cart_amt = document.getElementById('total_cart_amt');
+
+
+    const decreaseNumber = (itmid, itemprice, actualPrice) => {
+        var itemval = document.getElementById(itmid);
+        var itemprice = document.getElementById(itemprice);
+
+        console.log(itemval);
+        if (itemval.value <= 1) {
+            itemval.value = 1;
+            itemprice.innerHTML = parseInt(itemval.value) * (parseInt(actualPrice))
+            // prod_total_amt.innerHTML = parseInt(prod_total_amt.innerHTML) - (parseInt(actualPrice));
+            // total_cart_amt.innerHTML = parseInt(prod_total_amt.innerHTML) + parseInt(shopping_charge.innerHTML);
+        } else {
+            cart = JSON.parse(localStorage.getItem('cart'));
+            // qty = cart[]
+
+            var id = itmid.slice(7,);
+            console.log(id + "itmid")
+            var idstr = "pr" + id;
+            cart[idstr][0] = parseInt(itemval.value) - 1;
+            console.log(cart);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            itemval.value = parseInt(itemval.value) - 1;
+            itemprice.innerHTML = parseInt(itemval.value) * (parseInt(actualPrice))
+            prod_total_amt.innerHTML = parseInt(prod_total_amt.innerHTML) - (parseInt(actualPrice));
+            total_cart_amt.innerHTML = parseInt(prod_total_amt.innerHTML) + parseInt(shopping_charge.innerHTML);
+        }
+
+    }
+
+    const increaseNumber = (itmid, itemprice, actualPrice) => {
+        var itemval = document.getElementById(itmid);
+        var itemprice = document.getElementById(itemprice);
+        console.log(itemval.value);
+
+
+        if (itemval.value >= 5) {
+            itemval.value = 5;
+            alert('Max 5 items')
+
+
+        } else {
+            cart = JSON.parse(localStorage.getItem('cart'));
+            // qty = cart[]
+
+            var id = itmid.slice(7,);
+            console.log(id + "itmid")
+            var idstr = "pr" + id;
+            cart[idstr][0] = parseInt(itemval.value) + 1;
+
+            console.log(cart);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            itemval.value = parseInt(itemval.value) + 1;
+            var oneprod = (parseInt(itemval.value)) * (parseInt(actualPrice))
+            itemprice.innerHTML = oneprod;
+            prod_total_amt.innerHTML = parseInt(prod_total_amt.innerHTML) + (parseInt(actualPrice));
+            total_cart_amt.innerHTML = parseInt(prod_total_amt.innerHTML) + parseInt(shopping_charge.innerHTML);
+
+        }
+
+    }
+
+
+    const removeItem = (id) => {
+        console.log("click" + id)
+        // var idstr = {}
+        idstr = "pr" + id;
+        console.log(typeof (idstr))
+
+        // a = JSON.parse(idstr);
+        // console.log(a)
+
+        var jsoncart = JSON.parse(localStorage.getItem('cart'));
+        console.log(typeof (jsoncart))
+        console.log(jsoncart)
+        delete jsoncart[idstr]
+        console.log(jsoncart)
+        localStorage.setItem('cart', JSON.stringify(jsoncart));
+        loadCartItem();
+    }
+
+
+
+
+    const checkout = () => {
+        console.log("checkout");
+    }
+
+
+
+
+
+    const discount_code = () => {
+        console.log(discount_code);
+        var coupncode = document.getElementById('discountcode1');
+        console.log(coupncode.value);
+        if (coupncode == 'king') {
+            total_cart_amt.innerHTML = parseInt(total_cart_amt).innerHTML - 50;
+        }
+    }
+</script>
+
+{% endblock %}
