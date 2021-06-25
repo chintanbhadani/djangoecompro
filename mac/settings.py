@@ -21,12 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ca&&7wdtmq6!uxph)el&koz$6p4nsq1j58hscev!9a1_-u414!'
+# SECRET_KEY = 'django-insecure-ca&&7wdtmq6!uxph)el&koz$6p4nsq1j58hscev!9a1_-u414!'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['djangoecomproject.herokuapp.com','localhost']
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -123,7 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR,'shop/static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MADIA_URL = '/media/'
