@@ -76,7 +76,7 @@ prompt-toolkit==2.0.10
 protlib==1.4
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-PyAudio @ file:///C:/Users/Chintan/pipwin/PyAudio-0.2.11-cp38-cp38-win_amd64.whl
+
 pycparser==2.20
 pydroid==0.1.4
 Pygments==2.5.2
