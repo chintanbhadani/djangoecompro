@@ -100,10 +100,11 @@
 
         document.getElementById("placeorderbtn").addEventListener('click', showpaybtn);
 
-        function showpaybtn() {
+        function showpaybtn(e) {
             console.log("showpaybtn ");
             document.getElementById("rzp-button1").classList.remove('invisible');
             console.log(payment);
+            e.preventDefault();
         }
 
         // if(payment != ""){
@@ -157,7 +158,9 @@
 
         $(document).ready(function () {
             $(document).on('submit', '#formsubmit', function (event) {
-                alert('dude you totally clicked'); event.preventDefault(); return false;
+                alert('dude you totally clicked');
+                 event.preventDefault();
+                //   return false;
             });
         });
 
